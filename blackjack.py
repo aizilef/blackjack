@@ -43,8 +43,6 @@ def total(hand):
 # that returns true or false if it decides to 'hit'.
 
 # Strategies
-def strategy(total, up_card):
-    pass
 
 def hard_totals(total, up_card):
     if total < 12:
@@ -78,14 +76,19 @@ def soft_totals(total,up_card):
 
     return action
 
-def watched(strategy):
-    return strategy
-
-def stop_at_17(total):
+def stop_at_17(total,up_card):
     if total >= 17:
         action = False
-    else: action = True
+    else: 
+        action = True
     return action
+
+# Write a procedure called watched that takes a strategy 
+# and returns a strategy that behaves the same way only also 
+# prints (as a side-effect) the arguments it was called 
+# with (hand and up-card) and the decision to hit or not
+def watched(strategy):
+    return strategy
     
 # Take a look at the play-game procedure: it takes 2 strategies, 
 # for the player and dealer then uses play-hand to play the players 
@@ -113,7 +116,7 @@ def play_hand(strategy, hand, up_card):
         return hand
 
 
-def play_game(strategy_p):
+def play_game(strategy_p,strategy_d):
     # initialize deck
     shuffle_deck()
 
@@ -127,11 +130,15 @@ def play_game(strategy_p):
 
     # play
     p = play_hand(strategy_p,p,up_card(d))
+    d = play_hand(strategy_d,d,up_card)
 
     print('Player hand:',p,'Total: ',total(p))
     print('Dealer hand:',d,'Total: ',total(d))
 
-    if total(p) > 21: # bust
+    if total(d) > 21: #dealer bust
+        return 1
+
+    if total(p) > 21: # player bust
         print('L')
         return 0
     else:
@@ -150,6 +157,6 @@ n = 200
 
 for i in range(n):
     print(f'===== Game {i+1} =====')
-    games.append(play_game(soft_totals))
+    games.append(play_game(hard_totals,stop_at_17))
 
 print(f'Winrate: {sum(games)/n * 100}%')
