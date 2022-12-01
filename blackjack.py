@@ -80,6 +80,12 @@ def soft_totals(total,up_card):
 
 def watched(strategy):
     return strategy
+
+def stop_at_17(total):
+    if total >= 17:
+        action = False
+    else: action = True
+    return action
     
 # Take a look at the play-game procedure: it takes 2 strategies, 
 # for the player and dealer then uses play-hand to play the players 
