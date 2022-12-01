@@ -46,42 +46,42 @@ def total(hand):
 
 def hard_totals(total, up_card):
     if total < 12:
-        action = True
+        hit = True
     elif total == 12:
         if up_card in [4, 5, 6]:
-            action = False
+            hit = False
         else:
-            action =  True
+            hit =  True
     elif total < 17:
         if up_card in [7, 8, 9, 10] or up_card == 11:
-            action = False
+            hit = False
         else:
-            action = True
+            hit = True
     else:
-        action = False
+        hit = False
 
-    return action
+    return hit
 
 def soft_totals(total,up_card):
     if total <= 17:
-        action = True
+        hit = True
 
     elif total == 18:
         if up_card in [9,10] or up_card == 11:
-            action = True
+            hit = True
         else:
-            action = False 
+            hit = False 
     else: 
-        action = False
+        hit = False
 
-    return action
+    return hit
 
 def stop_at_17(total,up_card):
     if total >= 17:
-        action = False
+        hit = False
     else: 
-        action = True
-    return action
+        hit = True
+    return hit
 
 # Write a procedure called watched that takes a strategy 
 # and returns a strategy that behaves the same way only also 
