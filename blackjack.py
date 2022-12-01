@@ -11,8 +11,7 @@ def shuffle_deck():
             10, 10, 10, 10, 11,
             10, 10, 10, 10, 11,
             10, 10, 10, 10, 11,
-            10, 10, 10, 10, 11
-            ]
+            10, 10, 10, 10, 11]
     random.shuffle(DECK)
 
 # A simple model for the deck
@@ -24,7 +23,6 @@ def deal():
     return card
 
 # Modelling hands
-
 def hand(h):
     return h               # identity function
 
@@ -48,8 +46,7 @@ def total(hand):
 def strategy(total, up_card):
     pass
 
-def hard_totals(total,up_card):
-
+def hard_totals(total, up_card):
     if total < 12:
         action = True
     elif total == 12:
@@ -58,7 +55,7 @@ def hard_totals(total,up_card):
         else:
             action =  True
     elif total < 17:
-        if up_card in [7, 8, 9, 10] or up_card == '11':
+        if up_card in [7, 8, 9, 10] or up_card == 11:
             action = False
         else:
             action = True
@@ -66,6 +63,23 @@ def hard_totals(total,up_card):
         action = False
 
     return action
+
+def soft_totals(total,up_card):
+    if total <= 17:
+        action = True
+
+    elif total == 18:
+        if up_card in [9,10] or up_card == 11:
+            action = True
+        else:
+            action = False 
+    else: 
+        action = False
+
+    return action
+
+def watched(strategy):
+    return strategy
     
 # Take a look at the play-game procedure: it takes 2 strategies, 
 # for the player and dealer then uses play-hand to play the players 
@@ -80,9 +94,9 @@ def hard_totals(total,up_card):
 
         
 def play_hand(strategy, hand, up_card): 
-    print('current hand: ', hand)
-    print('total: ',total(hand))
-    print('up: ',up_card)
+    # print('current hand: ', hand)
+    # print('total: ',total(hand))
+    # print('up: ',up_card)
     
     if strategy(total(hand), up_card) == True:  
         print('HIT')     
@@ -94,7 +108,6 @@ def play_hand(strategy, hand, up_card):
 
 
 def play_game(strategy_p):
-
     # initialize deck
     shuffle_deck()
 
@@ -109,24 +122,28 @@ def play_game(strategy_p):
     # play
     p = play_hand(strategy_p,p,up_card(d))
 
-    print('Player hand:',p)
-    print('Dealer hand:',d)
+    print('Player hand:',p,'Total: ',total(p))
+    print('Dealer hand:',d,'Total: ',total(d))
 
     if total(p) > 21: # bust
+        print('L')
         return 0
     else:
         if total(p) > total(d):
+            print('W')
             return 1
         else:
+            print('L')
             return 0
 
 
 
 # simulate games
 games = []
-n = 500
+n = 200
 
 for i in range(n):
-    games.append(play_game(hard_totals))
+    print(f'===== Game {i+1} =====')
+    games.append(play_game(soft_totals))
 
 print(f'Winrate: {sum(games)/n * 100}%')
