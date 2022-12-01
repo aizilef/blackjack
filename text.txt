@@ -1,0 +1,44 @@
+~ init deck
+
+shuffle_deck():
+- randomize and shuffle deck
+
+deal()
+- get the top card from the deck, and pop it out of the deck
+
+~ Hand functions
+
+hand(h)
+- Return cards in h
+
+new_hand()
+- get dealt a card, initialize a hand
+
+up_card(hand)
+- return topmost card in hand
+
+add_card(hand, card)
+- add a card into your hand
+
+total(hand)
+- count value of hand
+
+~ Strategies
+
+strategy(total, up_card)
+- basic format of a Strategy
+
+hard_totals(total, up_card)
+- 
+
+soft_totals(total, up_card)
+- 
+
+stop-at-17(total, up_card)
+- stands when total is >= 17
+
+stop-at-n(n):
+- stands when total is >= n
+
+watched(strategy)
+- returns a strategy that behaves the same way but also prints actions

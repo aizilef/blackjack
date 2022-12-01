@@ -79,13 +79,38 @@ def soft_totals(total,up_card):
     return action
 
 def watched(strategy):
+# Write a procedure called watched that takes a strategy 
+# and returns a strategy that behaves the same way only also prints 
+# (as a side-effect) the arguments it was called with (hand and up-card) 
+# and the decision to hit or not
+
+# vvv this Stands immediately, idk how to make it run
+    # def strategy(total, up_card):
+    #     if strategy == True:
+    #         print('Watch that hit')
+    #         action = True
+    #     else:
+    #         print('make a stand')
+    #         action = False
+    #     print(f'total: {total} up_card: {up_card}')
+    #     return action
     return strategy
 
-def stop_at_17(total):
+def stop_at_17(total, up_card):
     if total >= 17:
         action = False
-    else: action = True
+    else: 
+        action = True
     return action
+
+def stop_at_n(n):
+    def stop_n(total, up_card):
+        if total >= n:
+            action = False
+        else: 
+            action = True
+        return action
+    return stop_n
     
 # Take a look at the play-game procedure: it takes 2 strategies, 
 # for the player and dealer then uses play-hand to play the players 
@@ -113,7 +138,7 @@ def play_hand(strategy, hand, up_card):
         return hand
 
 
-def play_game(strategy_p):
+def play_game(strategy_p, strategy_d):
     # initialize deck
     shuffle_deck()
 
@@ -127,6 +152,7 @@ def play_game(strategy_p):
 
     # play
     p = play_hand(strategy_p,p,up_card(d))
+    d = play_hand(strategy_d,d,up_card(p))
 
     print('Player hand:',p,'Total: ',total(p))
     print('Dealer hand:',d,'Total: ',total(d))
@@ -134,6 +160,9 @@ def play_game(strategy_p):
     if total(p) > 21: # bust
         print('L')
         return 0
+    elif total(d) > 21:
+        print('W')
+        return 1
     else:
         if total(p) > total(d):
             print('W')
@@ -146,10 +175,10 @@ def play_game(strategy_p):
 
 # simulate games
 games = []
-n = 200
+n = 50
 
 for i in range(n):
     print(f'===== Game {i+1} =====')
-    games.append(play_game(soft_totals))
+    games.append(play_game(stop_at_17, stop_at_n(18)))
 
 print(f'Winrate: {sum(games)/n * 100}%')
