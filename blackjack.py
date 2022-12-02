@@ -48,12 +48,6 @@ def total(hand):
     return sum(hand)
 
 
-def face_val(total):
-    if total < 11:
-        return 11
-    else:
-        return 1
-
 # We will model a strategy as a procedure of the current hand
 # and the dealers 'up card' (which a decent strategy will take into account)
 # that returns true or false if it decides to 'hit'.
@@ -70,7 +64,7 @@ def hard_totals(total, up_card):
         else:
             hit = True
     elif total < 17:
-        if up_card in [7, 8, 9, 10] or up_card == 11:
+        if up_card in [7, 8, 9, 10, 11]:
             hit = False
         else:
             hit = True
@@ -85,7 +79,7 @@ def soft_totals(total, up_card):
         hit = True
 
     elif total == 18:
-        if up_card in [9, 10] or up_card == 11:
+        if up_card in [9, 10, 11]:
             hit = True
         else:
             hit = False
@@ -123,11 +117,9 @@ def stop_at_n(n):
 
 
 def watched(strategy):
-    s_name = strategy.__name__
-
-    def strategy(total, up_card):
+    def watched_strategy(total, up_card):
         print(f'total: {total}, up_card: {up_card}')
-        hit = eval(f'{s_name}({total},{up_card})')
+        hit = strategy(total, up_card)
 
         if hit == True:
             print('hit')
@@ -135,7 +127,7 @@ def watched(strategy):
             print('stand')
         return hit
 
-    return strategy
+    return watched_strategy
 
 
 # Take a look at the play-game procedure: it takes 2 strategies,
@@ -174,8 +166,8 @@ def play_game(strategy_p, strategy_d):
     p = play_hand(strategy_p, p, up_card(d))
     d = play_hand(strategy_d, d, up_card(d))
 
-    print('Final player hand:', p, 'Total: ', total(p))
-    print('Final dealer hand:', d, 'Total: ', total(d))
+    print('final player hand:', p, 'total: ', total(p))
+    print('final dealer hand:', d, 'total: ', total(d))
 
     if total(d) > 21:  # dealer bust
         print('W')
@@ -193,12 +185,15 @@ def play_game(strategy_p, strategy_d):
             return 0
 
 
-# simulate games
-games = []
-n = 5
+def test_strategy(n, player_strategy, house_strategy):
+    # simulate games
+    games = []
 
-for i in range(n):
-    print(f'===== Game {i+1} =====')
-    games.append(play_game(watched(stop_at_17), stop_at_n(18)))
+    for i in range(n):
+        print(f'===== Game {i+1} =====')
+        games.append(play_game(player_strategy, house_strategy))
 
-print(f'Winrate: {sum(games)/n * 100}%')
+    print(f'Winrate: {sum(games)/n * 100}%')
+
+
+test_strategy(10, watched(stop_at_17), stop_at_n(18))
