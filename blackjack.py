@@ -171,7 +171,7 @@ def play_game(strategy_p, strategy_d):
     d = add_card(d, deal())
 
     # play
-    p = play_hand(watched(strategy_p), p, up_card(d))
+    p = play_hand(strategy_p, p, up_card(d))
     d = play_hand(strategy_d, d, up_card(d))
 
     print('Final player hand:', p, 'Total: ', total(p))
@@ -199,6 +199,6 @@ n = 5
 
 for i in range(n):
     print(f'===== Game {i+1} =====')
-    games.append(play_game(hard_totals, stop_at_n(17)))
+    games.append(play_game(watched(stop_at_17), stop_at_n(18)))
 
 print(f'Winrate: {sum(games)/n * 100}%')
