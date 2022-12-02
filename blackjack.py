@@ -171,7 +171,7 @@ def play_game(strategy_p, strategy_d):
     d = add_card(d, deal())
 
     # play
-    p = play_hand(watched(hard_totals), p, up_card(d))
+    p = play_hand(watched(strategy_p), p, up_card(d))
     d = play_hand(strategy_d, d, up_card(d))
 
     print('Final player hand:', p, 'Total: ', total(p))
